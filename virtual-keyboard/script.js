@@ -212,7 +212,7 @@ const Keyboard = {
         if (!isNaN(+key.textContent) || keyLayoutAlt.findIndex(x=> x==key.textContent)>=0) {
           key.textContent = this.properties.shift ? keyLayoutAlt[+key.textContent] : "" + keyLayoutAlt.findIndex(x=> x==key.textContent);
         } else {
-          key.textContent = this.properties.shift ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+          key.textContent = this.properties.shift!=this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
         }
       }
     }
