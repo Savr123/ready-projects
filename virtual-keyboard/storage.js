@@ -102,26 +102,18 @@ const Keyboard = {
 
                     keyElement.addEventListener("click", () => {
                         this.audioOn();
-                        this._toggleCapsLock();
-                        keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
-                      });
-            
-                      break;
-                
-                case "shift":
-                    keyElement.classList.add("keyboard__key--wide");
-                    keyElement.textContent = key.toLowerCase();
-        
-                    keyElement.addEventListener("click", () => {
-                    this._toggleShift();
-                    keyElement.classList.toggle("keyboard__key--active", this.properties.shift);
+                        this.isCapsLock = !this.isCapsLock;
+                        for (const key of this.elements.keysElements) {
+                            if (key.childElementCount === 0) {
+                                key.textContent = this.isCapsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+                            }
+                        }
+                        keyElement.classList.toggle("keyboard__key_active", this.isCapsLock);
                     });
-        
                     break;
-            
 
                 case "enter":
-                    keyElement.classList.add("keyboard__key--extra-wide");
+                    keyElement.classList.add("keyboard__key-wide");
                     keyElement.innerHTML = createIconHTML("keyboard_return");
 
                     keyElement.addEventListener("click", () => {
@@ -156,7 +148,6 @@ const Keyboard = {
 
                 default:
                     keyElement.textContent = key.toLowerCase();
-                    keyElement.classList.add("key-token");
 
 
                     if (this.en.includes(key)) {
@@ -177,30 +168,6 @@ const Keyboard = {
         });
 
         return fragment;
-    },
-
-    _toggleCapsLock() {
-      this.properties.capsLock = !this.properties.capsLock;
-  
-      for (const key of this.elements.keys) {
-        if (key.childElementCount === 0 && key.classList.contains("key-token")) {
-          key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
-        }
-      }
-    },
-
-    _toggleShift() {
-      const keyLayoutAlt = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"];
-      this.properties.shift = !this.properties.shift;
-      for (const key of this.elements.keys) {
-        if (key.childElementCount === 0 && key.classList.contains("key-token")) {
-          if (!isNaN(+key.textContent) || keyLayoutAlt.findIndex(x=> x==key.textContent)>=0) {
-            key.textContent = this.properties.shift ? keyLayoutAlt[+key.textContent] : "" + keyLayoutAlt.findIndex(x=> x==key.textContent);
-          } else {
-            key.textContent = this.properties.shift ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
-          }
-        }
-      }
     },
 
     input() {
