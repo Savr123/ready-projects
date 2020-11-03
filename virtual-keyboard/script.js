@@ -57,9 +57,8 @@ const Keyboard = {
           "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "backspace",
           "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
           "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
-          "en","z", "x", "c", "v", "b", "n", "m", ",", ".", "?",
-          "done",
-          "space"
+          "en","z", "x", "c", "v", "b", "n", "m", ",", ".", "?","shift",
+          "space","done"
       ];
 
       // creates HTML for an icon
@@ -88,7 +87,7 @@ const Keyboard = {
 
                               let indexInKeys = keys.indexOf(this.elements.keysElements[i].textContent);
                               keys.splice(indexInKeys, 1, this.isEn ? this.ru[index] : this.en[index]);
-                              if (this.isCapsLock){
+                              if (this.properties.capsLock){
                                   this.elements.keysElements[i].textContent = this.isEn ? this.ru[index].toUpperCase() : this.en[index].toUpperCase();
                               }
                               else{
@@ -113,7 +112,7 @@ const Keyboard = {
                   });
                   break;
               case "caps":
-                  keyElement.classList.add("keyboard__key-wide", "keyboard__key_activatable");
+                  keyElement.classList.add("keyboard__key--wide", "keyboard__key--activatable");
                   keyElement.innerHTML = createIconHTML("keyboard_capslock");
 
                   keyElement.addEventListener("click", () => {
@@ -182,7 +181,7 @@ const Keyboard = {
                       this.audioOn();
 
                       this.inputValue = document.querySelector(".use-keyboard-input").value
-                      this.inputValue += this.isCapsLock ? keys[index].toUpperCase() : keys[index].toLowerCase();
+                      this.inputValue += this.properties.capsLock ? keys[index].toUpperCase() : keys[index].toLowerCase();
                       this.input();
                   });
                   break;
@@ -197,7 +196,7 @@ const Keyboard = {
   _toggleCapsLock() {
     this.properties.capsLock = !this.properties.capsLock;
 
-    for (const key of this.elements.keys) {
+    for (const key of this.elements.keysElements) {
       if (key.childElementCount === 0 && key.classList.contains("key-token")) {
         key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
       }
@@ -207,7 +206,7 @@ const Keyboard = {
   _toggleShift() {
     const keyLayoutAlt = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"];
     this.properties.shift = !this.properties.shift;
-    for (const key of this.elements.keys) {
+    for (const key of this.elements.keysElements) {
       if (key.childElementCount === 0 && key.classList.contains("key-token")) {
         if (!isNaN(+key.textContent) || keyLayoutAlt.findIndex(x=> x==key.textContent)>=0) {
           key.textContent = this.properties.shift ? keyLayoutAlt[+key.textContent] : "" + keyLayoutAlt.findIndex(x=> x==key.textContent);
