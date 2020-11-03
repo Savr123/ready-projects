@@ -128,8 +128,9 @@ const Keyboard = {
                   keyElement.textContent = key.toLowerCase();
       
                   keyElement.addEventListener("click", () => {
-                  this._toggleShift();
-                  keyElement.classList.toggle("keyboard__key--active", this.properties.shift);
+                    this.audioOn();
+                    this._toggleShift();
+                    keyElement.classList.toggle("keyboard__key--active", this.properties.shift);
                   });
       
                   break;
